@@ -2,6 +2,8 @@
 
 A structured logging package for Go built on [zerolog](https://github.com/rs/zerolog). It provides a simple interface with scoped loggers, colored console output, optional file logging, and a custom Event level for domain-significant occurrences.
 
+![screenshot](screenshot.png)
+
 ## Install
 
 ```sh
@@ -14,7 +16,7 @@ go get github.com/AquiGorka/go-logger
 package main
 
 import (
-	"os"
+	"errors"
 
 	logger "github.com/AquiGorka/go-logger"
 )
@@ -25,14 +27,14 @@ func main() {
 		panic(err)
 	}
 
-	l.Info("server started")
+	l.Info("server started on :8080")
 	l.Event("user signed up")
 	l.Debug("request", "GET /api/health")
-	l.Error(err, "failed to connect")
+	l.Error(errors.New("connection refused"), "database unreachable")
 
 	// Scoped loggers carry a name for context
 	db := l.Scope("db")
-	db.Info("connection established")
+	db.Info("connection pool initialized")
 }
 ```
 
